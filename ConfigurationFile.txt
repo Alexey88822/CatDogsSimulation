@@ -1,0 +1,10 @@
+#Config
+#Sun Jun 17 23:29:44 KRAT 2018
+TimeDogLife=72
+priorCat=4
+periodBornCat=1
+TimeCatLife=56
+probabilityDog=28
+priorDog=4
+periodBornDog=1
+probabilityCat=30

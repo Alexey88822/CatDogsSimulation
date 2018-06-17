@@ -1,0 +1,10 @@
+#Config
+#Thu Apr 26 14:59:05 KRAT 2018
+TimeDogLife=50
+priorCat=1
+periodBornCat=1
+TimeCatLife=50
+probabilityDog=70
+priorDog=1
+periodBornDog=1
+probabilityCat=70
