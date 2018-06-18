@@ -5,6 +5,7 @@ import com.google.gson.stream.JsonReader;
 import data.*;
 import machines.HabitatModel;
 import machines.HabitatView;
+import machines.HabitatController;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -64,17 +65,25 @@ public class SocketRecieve extends Thread {
                         for(int i=0; i<PetArrayList.getInstance().arrayPetList.size(); i++) {
                             Pet pet = PetArrayList.getInstance().arrayPetList.get(i);
                             String type = pet instanceof Cat ? "cat" : "dog";
-                            newPets.add(new NewPet(pet.getX(), pet.getY(), pet.getIdentity(), type));
+                            if (pet instanceof Dog) {
+                                newPets.add(new NewPet(pet.getX(), pet.getY(), pet.getIdentity(), type));
+                                PetTreeSet.addDogTreeSet(pet.getIdentity());
+                                PetHashMap.hashmapDog.put(pet.getIdentity(), PetHashMap.getTimeofBorn(pet.getIdentity()));
+                                PetArrayList.removeFromarrayPetList(pet);
+                            }
                         }
-                        PetsRequest res = new PetsRequest("swap res", PetArrayList.getInstance().id, petsRequest.getId(), newPets, PetTreeSet.numberSet, PetHashMap.hashmap);
+                        PetsRequest res = new PetsRequest("swap res", PetArrayList.getInstance().id, petsRequest.getId(), newPets, PetTreeSet.numberDog, PetHashMap.hashmapDog);
                         res.setTime(HabitatModel.time);
                         String req = gson.toJson(res);
                         outStream.write(req.getBytes());
                     case "swap res":
                         System.out.println("swap res from " + petsRequest.getId());
                         HabitatModel.time = petsRequest.getTime();
-                        PetTreeSet.numberSet = petsRequest.idTreeSet;
-                        PetHashMap.hashmap = petsRequest.bornHashMap;
+                        for(int i=0;i<petsRequest.arrayPetList.size();i++){
+                            NewPet newPet = petsRequest.arrayPetList.get(i);
+                            PetTreeSet.numberSet.add(newPet.getId());
+                            PetHashMap.hashmap.put(newPet.getId(), petsRequest.bornHashMap.get(newPet.getId()));
+                        }
                         for(int i=0; i<petsRequest.arrayPetList.size(); i++) {
                             NewPet newPet = petsRequest.arrayPetList.get(i);
                             Pet pet = newPet.getType().equals("cat") ? new Cat() : new Dog();
@@ -82,8 +91,9 @@ public class SocketRecieve extends Thread {
                             pet.setY(newPet.getPosY());
                             pet.setIdentity(newPet.getId());
                             pets.add(pet);
+                            PetArrayList.getInstance().arrayPetList.add(pet);
                         }
-                        PetArrayList.getInstance().arrayPetList = pets;
+                       HabitatController.Repaint();
                         break;
                     default:
                         System.out.println("def ");

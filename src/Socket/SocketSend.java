@@ -40,9 +40,14 @@ public class SocketSend {
         for(int i = 0; i<PetArrayList.getInstance().arrayPetList.size(); i++) {
             Pet pet = PetArrayList.getInstance().arrayPetList.get(i);
             String type = pet instanceof Cat ? "cat" : "dog";
-            newPets.add(new NewPet(pet.getX(), pet.getY(), pet.getIdentity(), type));
+            if (pet instanceof Cat) {
+                newPets.add(new NewPet(pet.getX(), pet.getY(), pet.getIdentity(), type));
+                PetTreeSet.addCatTreeSet(pet.getIdentity());
+                PetHashMap.hashmapCat.put(pet.getIdentity(), PetHashMap.getTimeofBorn(pet.getIdentity()));
+                PetArrayList.removeFromarrayPetList(pet);
+            }
         }
-        PetsRequest request = new PetsRequest("swap req", PetArrayList.getInstance().id, swapId, newPets, PetTreeSet.numberSet, PetHashMap.hashmap);
+        PetsRequest request = new PetsRequest("swap req", PetArrayList.getInstance().id, swapId, newPets, PetTreeSet.numberCat, PetHashMap.hashmapCat);
         request.setTime(HabitatModel.time);
         String req = gson.toJson(request);
         System.out.println("swap req " + req);

@@ -13,7 +13,7 @@ public class PetsRequest {
     ArrayList<String> users = new ArrayList<>();
     public ArrayList<NewPet> arrayPetList;
     public TreeSet<Integer> idTreeSet;
-    public Map<Integer, Long> bornHashMap;
+    public static Map<Integer, Long> bornHashMap;
 
     public PetsRequest(String status, String id, ArrayList<String> users) {
         this.status = status;
@@ -24,6 +24,8 @@ public class PetsRequest {
     public String getSwapId() {
         return swapId;
     }
+
+    public static void getTimeofBorn(int a) { bornHashMap.get(a); }
 
     public void setSwapId(String swapId) {
         this.swapId = swapId;

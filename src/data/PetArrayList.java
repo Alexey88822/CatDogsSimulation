@@ -9,7 +9,7 @@ public class PetArrayList {
     public ArrayList<String> users;
     public String id;
 
-    public ArrayList <Pet> arrayPetList;
+    public static ArrayList <Pet> arrayPetList;
 
     private PetArrayList(){
         arrayPetList = new ArrayList<>();
@@ -22,4 +22,6 @@ public class PetArrayList {
         }
         return instance;
     }
+
+    public static void removeFromarrayPetList(Pet pet) { arrayPetList.remove(pet); }
 }

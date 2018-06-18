@@ -3,7 +3,6 @@ package machines;
 import data.*;
 import Commands.*;
 
-import javax.sql.rowset.JdbcRowSet;
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
@@ -757,8 +756,8 @@ public class HabitatController {
     };
 
     Socket socket;
-    SocketRecieve socketListener;
-    SocketSend socketEmitter;
+    SocketRecieve socketRecieve;
+    SocketSend socketSend;
     private boolean open;
     private ActionListener onSocketClickListener = e -> {
         String host = "localhost";
@@ -767,9 +766,9 @@ public class HabitatController {
             view.socketButton.setText("Закрыть");
             try {
                 socket = new Socket(host, port);
-                socketListener = new SocketRecieve(socket, view, model);
-                socketListener.start();
-                socketEmitter = new SocketSend(socket);
+                socketRecieve = new SocketRecieve(socket, view, model);
+                socketRecieve.start();
+                socketSend = new SocketSend(socket);
             } catch (IOException e1) {
                 e1.printStackTrace();
             }
@@ -787,7 +786,7 @@ public class HabitatController {
     };
     private ActionListener onSwapClickListener = e -> {
         try {
-            socketEmitter.swap(PetArrayList.getInstance().users.get(view.usersList.getSelectedIndex()));
+            socketSend.swap(PetArrayList.getInstance().users.get(view.usersList.getSelectedIndex()));
         } catch (IOException e1) {
             e1.printStackTrace();
         }
